@@ -1,0 +1,23 @@
+{
+	"name": "Productivity Period",
+	"version": "1.0",
+	"options_page": "options.html",
+	"manifest_version": 2,
+	"description": "Allows a bunch of people to compare relative focus within a study time frame to see who is the most productive.",
+	"permissions": [
+		"activeTab",
+		"declarativeContent",
+		"storage",
+		"idle"
+	],
+	"background": {
+		"scripts": [
+			"js/background.js",
+			"js/jquery-3.4.1.min.js"
+		],
+		"persistent": false
+	},
+	"page_action": {
+		"default_popup": "popup.html"
+	}
+}
