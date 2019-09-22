@@ -83,13 +83,35 @@
 					<button type="submit">Generate Room ID</button>
 				</form>
 			</div>
-			<div class="page join-room">join-room</div>
+			<div class="page join-room">
+				<form id="join-room-form">
+					<table>
+						<tr>
+							<td class="message" colspan="2">Join a room</td>
+						</tr>
+						<tr>
+							<td>
+								Room code:
+							</td>
+							<td>
+								<input type="text" class="room-code" />
+							</td>
+						</tr>
+					</table>
+					<button type="submit">Join Room</button>
+				</form>
+			</div>
 			<div class="page waiting-room">
 				<div id="waiting-message">Members so far:</div>
 				<div id="joined-members"></div>
 				<p>Share the following code with others to let them join the same room: <span id="share-code"></span></p>
+				<button id="start-room">Begin</button>
 			</div>
-			<div class="page inside-room">inside-room</div>
+			<div class="page inside-room">
+				<h3>Time remaining:</h3>
+				<div><span id="time-left"></span> minutes</div>
+			</div>
+			<div class="page room-results">room-results</div>
 			<div class="page archive">archive</div>
 			<br />
 			<br />

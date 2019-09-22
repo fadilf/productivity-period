@@ -185,7 +185,7 @@ function create_session($user_ID, $title, $length){
 	global $mysqli;
 	$query = "INSERT INTO `Active Sessions` (Title, `Share Code`, Members, Length, `Start Time`) VALUES (?, ?, ?, ?, ?)";
 	$stmt = $mysqli->prepare($query);
-	$share_code = substr(uniqid(), 0, 7);
+	$share_code = substr(uniqid(), -7);
 	$members = json_encode([$user_ID]);
 	$start_time = 0;
 	$stmt->bind_param("sssii", $title, $share_code, $members, $length, $start_time);
@@ -290,7 +290,7 @@ function join_session($user_ID, $share_code){
  *	Inputs:
  *		- $session_ID: a unique integer ID for a session
  *	
- *	Outputs: true if successfully started, false otherwise
+ *	Outputs: info about session if successfully started, false otherwise
  */
 function start_session($session_ID){
 	global $mysqli;
@@ -300,7 +300,13 @@ function start_session($session_ID){
 	$stmt->bind_param("ii", $time, $session_ID);
 	$result = $stmt->execute();
 	$stmt->close();
-	return $time;
+	$query = "SELECT Length FROM `Active Sessions` WHERE ID=?";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $session_ID);
+	$stmt->bind_result($length);
+	$stmt->execute();
+	$stmt->fetch();
+	return $length;
 }
 
 /*
@@ -354,10 +360,10 @@ function running_session($session_ID){
  */
 function about_session($session_ID){
 	global $mysqli;
-	$query = "SELECT Members FROM `Active Sessions` WHERE ID=?";
+	$query = "SELECT `Start Time`, Members FROM `Active Sessions` WHERE ID=?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $session_ID);
-	$stmt->bind_result($members);
+	$stmt->bind_result($start_time, $members);
 	$result = $stmt->execute();
 	$member_data = [];
 	
@@ -371,7 +377,10 @@ function about_session($session_ID){
 			foreach($members as $member){
 				array_push($member_data, fetch_user_ID($member));
 			}
-			return $member_data;
+			return [
+				"Start Time" => $start_time,
+				"Members" => $member_data
+			];
 		
 		// If session ID does not match any active session
 		} else {

@@ -1,4 +1,4 @@
-var url = "http://localhost/pp-api/api.php";
+var url = "https://hr9.000webhostapp.com/api.php";
 var $container = $("#container");
 
 function pageToggle(newPage){
@@ -56,7 +56,7 @@ $("#make-room-form").submit(function(event){
 	var minutes = $("#make-room-form .minutes").val();
 	var t_length = hours*60 + minutes*1;
 	//create_session($_POST["user_ID"], $_POST["title"], $_POST["length"]))
-	
+
 	chrome.storage.sync.get('user', function(data){
 		console.log("User ID: " + data.user.ID);
 		var param = {
@@ -71,8 +71,36 @@ $("#make-room-form").submit(function(event){
 			var sharecode = response["Share Code"];
 			console.log("Share code: " + sharecode);
 			$("#share-code").html(sharecode);
-			pageToggle("waiting-room");
-			waitingRoom(response);
+			chrome.storage.sync.set({'session':response}, function(data){
+				console.log(response);
+				pageToggle("waiting-room");
+				waitingRoom(response);
+			});
+		});
+	});
+});
+
+$("#join-room-form").submit(function(event){
+	event.preventDefault();
+	var room_code = $("#join-room-form .room-code").val();
+
+	chrome.storage.sync.get('user', function(data){
+		console.log("User ID: " + data.user.ID);
+		var param = {
+			"function": "join_session",
+			"user_ID": data.user.ID,
+			"share_code": room_code
+		}
+		console.log("Parameters: ");
+		console.log(param);
+		$.post(url, param, function(response){
+			console.log("Share code: " + room_code);
+			$("#share-code").html(room_code);
+			chrome.storage.sync.set({'session':response}, function(data){
+				console.log(response);
+				pageToggle("waiting-room");
+				waitingRoom(response);
+			});
 		});
 	});
 });
@@ -88,23 +116,64 @@ $("#join-room").click(function(){
 var pollRoom;
 
 function waitingRoom(session_info){
+	console.log(session_info);
 	var param = {
 		"function": "about_session",
 		"session_ID": session_info.ID
 	}
 	console.log("Starting poll");
+	waitingRoomPoll(param);
 	pollRoom = setInterval(function(){
-		console.log("running poll...");
-		$.post(url, param, function(response){
-//			console.log(response);
-			$("#joined-members").html("")
-			for(var member in response){
-				member = response[member];
-				console.log(member);
-				var output = "<div class='j-member'>"+
-					member.Name + "</div>";
-				$("#joined-members").append(output);
-			}
-		});
+		waitingRoomPoll(param);
 	},5000);
+}
+
+function waitingRoomPoll(param){
+	console.log("running poll...");
+	$.post(url, param, function(response){
+		//			console.log(response);
+		$("#joined-members").html("")
+		var members = response.Members;
+		for(var member in members){
+			member = members[member];
+			//			console.log(member);
+			var output = "<div class='j-member'>"+
+				member.Name + "</div>";
+			$("#joined-members").append(output);
+		}
+		if(response["Start Time"] != 0){
+			beginRoom();
+		}
+	});
+}
+
+$("#start-room").click(function(){
+	beginRoom();
+});
+
+function beginRoom(){
+	clearInterval(pollRoom);
+	chrome.storage.sync.get('session', function(data){
+		console.log(data.session);
+		//start_session($_POST["session_ID"])
+		var param = {
+			'function': "start_session",
+			'session_ID': data.session.ID
+		}
+		$.post(url, param, function(response){
+			console.log(response);
+			$("#time-left").html(response);
+			pageToggle("inside-room");
+			startTracking(response);
+		});
+	});
+}
+
+function startTracking(length){
+	var time_left = length;
+	setInterval(function(){
+		time_left--;
+		$("#time-left").html(time_left);
+	},60*1000);
+	
 }
