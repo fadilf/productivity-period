@@ -95,6 +95,10 @@ button {
 	font-size: 1.1em;
 }
 
+#share-code {
+	font-weight: 700;
+}
+
 #container {
 	height: 5em;
 	width: 30em;

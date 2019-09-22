@@ -12,8 +12,9 @@ function pageToggle(newPage){
 
 chrome.storage.sync.get('user', function(data) {
 	var user = data.user;
+	console.log("User object:");
 	console.log(user);
-	console.log(user.Name);
+	console.log("Name:" + user.Name);
 	if (user === undefined || user === false) {
 		pageToggle("login");
 	} else {
@@ -31,6 +32,7 @@ $("#login-form").submit(function(event){
 		"user_email": email,
 		"password": password
 	}
+	console.log("Parameters: ")
 	console.log(param);
 	$.post(url, param, function(response){
 		if(response === "0"){
@@ -52,22 +54,25 @@ $("#make-room-form").submit(function(event){
 	var s_title = $("#make-room-form .session-name").val();
 	var hours = $("#make-room-form .hours").val();
 	var minutes = $("#make-room-form .minutes").val();
-	var t_length = hours*60 + minutes;
+	var t_length = hours*60 + minutes*1;
 	//create_session($_POST["user_ID"], $_POST["title"], $_POST["length"]))
 	
 	chrome.storage.sync.get('user', function(data){
-		console.log(data.user.ID);
+		console.log("User ID: " + data.user.ID);
 		var param = {
 			"function": "create_session",
-			"user_id": data.user.ID,
+			"user_ID": data.user.ID,
 			"title": s_title,
 			"length": t_length
 		}
+		console.log("Parameters: ");
 		console.log(param);
 		$.post(url, param, function(response){
-			console.log(response);
-			$("#share-code").html(response);
+			var sharecode = response["Share Code"];
+			console.log("Share code: " + sharecode);
+			$("#share-code").html(sharecode);
 			pageToggle("waiting-room");
+			waitingRoom(response);
 		});
 	});
 });
@@ -80,18 +85,26 @@ $("#join-room").click(function(){
 	pageToggle("join-room");
 });
 
-/*let changeColor = document.getElementById('changeColor');
+var pollRoom;
 
-chrome.storage.sync.get('color', function(data) {
-	changeColor.style.backgroundColor = data.color;
-	changeColor.setAttribute('value', data.color);
-});
-
-changeColor.onclick = function(element) {
-	let color = element.target.value;
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		chrome.tabs.executeScript(
-			tabs[0].id,
-			{code: 'document.body.style.backgroundColor = "' + color + '";'});
-	});
-};*/
+function waitingRoom(session_info){
+	var param = {
+		"function": "about_session",
+		"session_ID": session_info.ID
+	}
+	console.log("Starting poll");
+	pollRoom = setInterval(function(){
+		console.log("running poll...");
+		$.post(url, param, function(response){
+//			console.log(response);
+			$("#joined-members").html("")
+			for(var member in response){
+				member = response[member];
+				console.log(member);
+				var output = "<div class='j-member'>"+
+					member.Name + "</div>";
+				$("#joined-members").append(output);
+			}
+		});
+	},5000);
+}

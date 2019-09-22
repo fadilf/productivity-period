@@ -178,7 +178,8 @@ function verify_user($user_email, $password){
  *		- $title: a string for the title of the session
  *		- $length: an integer length of the session's time in minutes 
  *	
- *	Outputs: the string alpahnumeric 7 digit shareable invite code
+ *	Outputs: an array of information about the session if successfully
+ *	added to/already in session
  */
 function create_session($user_ID, $title, $length){
 	global $mysqli;
@@ -201,8 +202,17 @@ function create_session($user_ID, $title, $length){
 	// Returns result of SQL statement execution
 	$stmt->execute();
 	$stmt->close();
-	return $share_code;
+	
+	$session = [
+		"ID" => $session_ID,
+		"Share Code" => $share_code,
+		"Title" => $title,
+		"Length" => $length
+	];
+	return $session;
 }
+
+//var_dump(create_session(1,"me and the boys go studying",120));
 
 /*
  *	Adds a user to a session using the share code given to them
@@ -255,6 +265,7 @@ function join_session($user_ID, $share_code){
 			// Return info about session
 			$session = [
 				"ID" => $session_ID,
+				"Share Code" => $share_code,
 				"Title" => $title,
 				"Length" => $length
 			];
@@ -338,7 +349,7 @@ function running_session($session_ID){
  *	Inputs:
  *		- $session_ID: a unique integer ID for a session
  *	
- *	Outputs: an array of scores for each member of the session, -1
+ *	Outputs: an array of data for each member of the session, -1
  *	if session ID is invalid
  */
 function about_session($session_ID){
