@@ -7,9 +7,9 @@
  *	Created for Productivity Period
  *	<https://github.com/fadilf/productivity-period>
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include("./config.php");
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//include("./config.php");
 
 /*
  *	Inserts a row for a new user with the username and password
