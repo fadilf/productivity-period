@@ -6,6 +6,7 @@
  *	<https://github.com/fadilf/productivity-period>
  */
 
+header("Access-Control-Allow-Origin: *");
 include("./functions.php");
 
 /*
