@@ -22,14 +22,14 @@
  *	Outputs: true if successfully inserted, false if an error occurs
  *	when processing the SQL command.
  */
-function sign_up($user_email, $password){
+function sign_up($user_email, $user_fullname, $password){
 	global $mysqli;
-	$query = "INSERT INTO Users (Email, Password) VALUES (?, ?)";
+	$query = "INSERT INTO Users (Email, Name, Password) VALUES (?, ?, ?)";
 	$stmt = $mysqli->prepare($query);
 	
 	// Converts 60 character password hash to 40 byte binary value
 	$pass_hash = password_hash($password, PASSWORD_BCRYPT);
-	$stmt->bind_param("ss", $user_email, $pass_hash);
+	$stmt->bind_param("sss", $user_email, $user_fullname, $pass_hash);
 	
 	// Returns result of SQL statement execution
 	$result = $stmt->execute();
@@ -48,12 +48,13 @@ function sign_up($user_email, $password){
  */
 function fetch_user_ID($user_ID){
 	global $mysqli;
-	$query = "SELECT `Email`, `Password`, `Session Active`, `Session ID`, `Latest Session Score` FROM Users WHERE ID=?";
+	$query = "SELECT `Email`, `Name`, `Password`, `Session Active`, `Session ID`, `Latest Session Score` FROM Users WHERE ID=?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $user_ID);
 	$stmt->execute();
 	$stmt->bind_result(
 		$user_email,
+		$user_fullname,
 		$pass_hash,
 		$session_active,
 		$session_ID,
@@ -69,6 +70,7 @@ function fetch_user_ID($user_ID){
 		$user = [
 			"ID" => $user_ID,
 			"Email" => $user_email,
+			"Name" => $user_fullname,
 			"Password Hash" => $pass_hash,
 			"Session Active" => $session_active,
 			"Session ID" => $session_ID,
@@ -93,12 +95,13 @@ function fetch_user_ID($user_ID){
  */
 function fetch_user_email($user_email){
 	global $mysqli;
-	$query = "SELECT `ID`, `Password`, `Session Active`, `Session ID`, `Latest Session Score` FROM Users WHERE Email=?";
+	$query = "SELECT `ID`, `Name`, `Password`, `Session Active`, `Session ID`, `Latest Session Score` FROM Users WHERE Email=?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s", $user_email);
 	$stmt->execute();
 	$stmt->bind_result(
 		$user_ID,
+		$user_fullname,
 		$pass_hash,
 		$session_active,
 		$session_ID,
@@ -114,6 +117,7 @@ function fetch_user_email($user_email){
 		$user = [
 			"ID" => $user_ID,
 			"Email" => $user_email,
+			"Name" => $user_fullname,
 			"Password Hash" => $pass_hash,
 			"Session Active" => $session_active,
 			"Session ID" => $session_ID,
