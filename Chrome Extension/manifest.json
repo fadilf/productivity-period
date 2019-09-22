@@ -12,8 +12,7 @@
 	],
 	"background": {
 		"scripts": [
-			"js/background.js",
-			"js/jquery-3.4.1.min.js"
+			"js/background.js"
 		],
 		"persistent": false
 	},

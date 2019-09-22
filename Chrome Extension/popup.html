@@ -1,16 +1,99 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<style>
-			button {
-				height: 30px;
-				width: 30px;
-				outline: none;
-			}
-		</style>
+		<link rel="stylesheet" href="css/popup.css" />
 	</head>
 	<body>
-		<button id="changeColor"></button>
+		<div id="logo"></div>
+		<div id="container">
+			<div class="page sign-up">sign-up</div>
+			<div class="page login">
+				<form id="login-form">
+					<table>
+						<tr>
+							<td colspan="2" class="message">Enter your details below to log into your account:</td>
+						</tr>
+						<tr>
+							<td>
+								Email:
+							</td>
+							<td>
+								<input type="text" class="email" />
+							</td>              
+						</tr>
+						<tr>
+							<td>
+								Password:
+							</td>
+							<td>
+								<input type="password" class="password" />
+							</td>
+						</tr>
+					</table>
+					<input type="submit" value="Login" />
+				</form>
+			</div>
+			<div class="page home">
+				<p>
+					Hey <span class="name_fill"></span>!
+				</p>
+				<p>
+					What would you like to do today?
+				</p>
+
+				<button id="make-room">Make a room</button>
+				<button id="join-room">Join a room</button>
+				<!--
+<input type="button" value="View past records" id="">
+<input type="button" value="My ratio (THIS BUTTON NEEDS TO BE AN IMAGE OF A TROPHY)" id="">
+-->
+			</div>
+			<div class="page make-room">
+				<form id="make-room-form">
+					<table>
+						<tr>
+							<td class="message" colspan="2">Create a room</td>
+						</tr>
+						<tr>
+							<td>
+								Name of session:
+							</td>
+							<td>
+								<input type="text" class="session-name">
+							</td>                    
+						</tr>
+						<tr>
+							<td>
+								Enter hours:
+							</td>
+							<td>
+								<input type="number" class="hours">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Enter minutes:
+							</td>
+							<td>
+								<input type="number" class="minutes">
+							</td>
+						</tr>
+					</table>
+					<br />
+					<button type="submit">Generate Room ID</button>
+				</form>
+			</div>
+			<div class="page join-room">join-room</div>
+			<div class="page waiting-room">
+				<div>Waiting for others to join...</div>
+				<div id="share-code"></div>
+			</div>
+			<div class="page inside-room">inside-room</div>
+			<div class="page archive">archive</div>
+			<br />
+			<br />
+		</div>
+		<script src="js/jquery-3.4.1.min.js"></script>
 		<script src="js/popup.js"></script>
 	</body>
 </html>

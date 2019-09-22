@@ -1,0 +1,111 @@
+/* roboto-regular - latin */
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Roboto'), local('Roboto-Regular'),
+		url('../fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url('../fonts/roboto-v20-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Roboto Bold'), local('Roboto-Bold'),
+		url('../fonts/roboto-v20-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url('../fonts/roboto-v20-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700italic - latin */
+@font-face {
+	font-family: 'Roboto';
+	font-style: italic;
+	font-weight: 700;
+	src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'),
+		url('../fonts/roboto-v20-latin-700italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url('../fonts/roboto-v20-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+body {
+	font-family: 'Roboto';
+	background-image: url(../img/bg.png);
+	background-size: 120px;
+	padding: .5em;
+}
+
+h1 {
+	font-weight: 700;
+	font-size: 2.4em;
+	text-align: center;
+}
+
+#logo {
+	margin: 1.5em auto 0 auto;
+	width: 16em;
+	height: 8em;
+	background-image: url(../img/logo%20w%20txt%202.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+table {
+	margin: 0 auto;
+	font-size: 1.4em;
+	text-align: left;
+}
+
+.message {
+	font-size: 1.1em;
+	padding: .4em 0;
+	font-weight: 700;
+}
+
+table input[type="text"],
+table input[type="number"],
+table input[type="password"] {
+	margin: 0 auto;
+	font-size: 1.1em;
+}
+
+form [type="submit"],
+button {
+	display: block;
+	margin: 1em auto 0;
+	background: #cfcfcf;
+	padding: .5em .9em;
+}
+
+.home {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.home button {
+	display: inline-block;
+	font-size: .9em;
+	margin: 0 .2em;
+}
+
+.make-room {
+	font-size: .8em;
+}
+
+.make-room button {
+	font-size: 1.1em;
+}
+
+#container {
+	height: 5em;
+	width: 30em;
+	font-size: 1.2em;
+	border: 1em solid transparent;
+}
+
+#container .page {
+	display: none;
+}
+
+#container .page.visible {
+	display: block;
+}
