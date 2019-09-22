@@ -470,4 +470,3 @@ function close_session($session_ID){
 		return false;
 	}
 }
-var_dump(close_session(5));
