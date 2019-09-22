@@ -1,12 +1,13 @@
 <?php
 /*
  *	Backend fuction library for handling server requests. Used
- *	in conjunction with REST API to allow Chrome extension to
+ *	in conjunction with api.php to allow Chrome extension to
  *	handle user accounts and manage sessions.
  *	
  *	Created for Productivity Period
  *	<https://github.com/fadilf/productivity-period>
  */
+
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 //include("./config.php");
